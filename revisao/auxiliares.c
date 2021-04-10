@@ -147,7 +147,7 @@ int is_safe(int **board, int val, int row, int col) // verifica se valor já foi
 
 int solveur_check_row(int **board, int row, int col)
 {
-	if (col != 4)
+	if (col != 4) //verificação ocorre apenas depois do preenchumento de toda a tabela?
 		return (1);
 	if (!check_row(board[row]))
 	{
@@ -175,10 +175,10 @@ int check_row(int *row) // confere numero de vistas de determinada coluna de aco
 		}
 		i++;
 	}
-	if (count != row[0])
+	if (count != row[0]) // se numero final de prédios visiveis difere do esperado (coluna da esquerda) retorna 0
 		return (0);
-	i--;
-	max = 0;
+	i--; //volta i para 4 para fazer verificação da direita para a esquerda;
+	max = 0; //reseta variáveis auxiliares
 	count = 0;
 	while (i > 0)
 	{
@@ -198,7 +198,7 @@ int solveur_check_col(int **board, int row, int col)
 {
 	if (row != 4)
 		return (1);
-	if (!check_col(board, col))
+	if (!check_col(board, col)) //libera espaço das colunas, por que?
 	{
 		board[row][col] = 0;
 		return (0);
