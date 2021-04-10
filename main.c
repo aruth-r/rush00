@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 		error();
 		return (0);
 	}
-	views = check_argv(argv[1]);
+	views = check_argv(argv[1]); // verifica se os argumentos passados são válidos.
 	if (views == NULL)
 		return (0);
 	board = initialize_board(views);
@@ -40,4 +40,4 @@ int main(int argc, char **argv)
 	free_board(board);
 	free(views);
 	return (0);
-}
+} //Retorna uma matriz bidimensional dinâmica com alturas de torre. Se a torre estiver inacabada, então a altura * é igual a zero. Se a matriz não for mais necessária, ela deve ser removida com a função free ().
