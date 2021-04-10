@@ -110,9 +110,9 @@ int solveur(int **board, int row, int col)
 		if (val > 4) // se não achou nenhum valor de 0 a 4 que resolva a solução, retorna 0
 			return (0);
 		board[row][col] = val; // se valor está disponível, é alocado em determinada posição da matriz
-		if (!solveur_check_row(board, row, col))
+		if (!solveur_check_row(board, row, col)) // confere valor de acordo com número de vistas da linha
 			return (0);
-		if (!solveur_check_col(board, row, col))
+		if (!solveur_check_col(board, row, col))// confere valor de acordo com número de vistas da coluna
 			return (0);
 		if (row == 4 && col == 4) // Se chegar até aqui, sem erros, finaliza com sucesso
 			return (1);
@@ -143,4 +143,86 @@ int is_safe(int **board, int val, int row, int col) // verifica se valor já foi
 			return (0);
 	}
 	return (1); // se o valor não é repetido pode ser utiliazado;
+}
+
+int solveur_check_row(int **board, int row, int col)
+{
+	if (col != 4)
+		return (1);
+	if (!check_row(board[row]))
+	{
+		board[row][col] = 0;
+		return (0);
+	}
+	return (1);
+}
+
+int check_row(int *row) // confere numero de vistas de determinada coluna de acordo com alocação atual
+{
+	int i;
+	int max; // maximo procura pelo maior valor preenchido
+	int count;
+
+	i = 1;
+	max = 0;
+	count = 0;
+	while (i < 5)
+	{
+		if (row[i] > max) // se o valor da linha a seguir é menor que o da linha anterior não será visivel
+		{
+			max = row[i]; // se o valor da linha a seguir é maior que o da linha anterior se torna o novo máximo
+			count++; // se é maior que os anteriores, será visível, por tanto soma-se a contagem de prédios
+		}
+		i++;
+	}
+	if (count != row[0])
+		return (0);
+	i--;
+	max = 0;
+	count = 0;
+	while (i > 0)
+	{
+		if (row[i] > max)
+		{
+			max = row[i];
+			count++;
+		}
+		i--;
+	}
+	if (count != row[5])
+		return (0);
+	return (1);
+}
+
+int solveur_check_col(int **board, int row, int col)
+{
+	if (row != 4)
+		return (1);
+	if (!check_col(board, col))
+	{
+		board[row][col] = 0;
+		return (0);
+	}
+	return (1);
+}
+
+int check_col(int **board, int col)
+{
+	int *tab;
+	int i;
+
+	tab = malloc(6 * sizeof(int));
+	i = 0;
+	while (i < 6)
+	{
+		tab[i] = board[i][col];
+		i++;
+	}
+	if (check_row(tab))
+	{
+		free(tab);
+		return (1);
+	}
+	free(tab);
+	return (0);
 }
