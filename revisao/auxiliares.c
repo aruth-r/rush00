@@ -1,3 +1,23 @@
+#include <stdlib.h>
+#include <unistd.h>
+
+void print_board(int **board);
+int solveur(int **board, int row, int col);
+int solveur_check_row(int **board, int row, int col);
+int solveur_check_col(int **board, int row, int col);
+int *check_argv(char *arg);
+int check_row(int *row);
+int check_col(int **board, int column);
+int is_safe(int **board, int val, int row, int col);
+int **initialize_board(int *vals);
+static void init_columns(int **board, int *vals);
+static void init_rows(int **board, int *vals);
+void free_board(int **board);
+void ft_putchar(char c);
+void ft_putstr(char *str);
+void error(void);
+int *error_null(void);
+
 //Passo um: transformação da string argv[1] em matriz tab
 int *check_argv(char *arg) // verifica se a string passada contem 16 numeros de um a 4 separados por espaço
 {
@@ -19,10 +39,10 @@ int *check_argv(char *arg) // verifica se a string passada contem 16 numeros de 
 			return (error_null()); // erro se pares não estão entre 1 a 4 e ímpares diferente de espaço
 		if (i % 2 == 0)
 			{
-                tab[j] = arg[i] - 48; //transforma  os valores de caracteres 1 a 4 em inteiros de 1 a 4 e aloca na matriz tab
-                j++;
-            }
-        i++;
+				tab[j] = arg[i] - 48; //transforma  os valores de caracteres 1 a 4 em inteiros de 1 a 4 e aloca na matriz tab
+				j++;
+			}
+		i++;
 	}
 	if ((i > 0 && (arg[i - 1] < '1' || arg[i - 1] > '4')) || i != 31) //esqueci o pq dessa kk
 		return (error_null());
@@ -226,3 +246,67 @@ int check_col(int **board, int col)
 	free(tab);
 	return (0);
 }
+
+//passo 4: imprimir tabela
+void print_board(int **board)
+{
+	int i;
+	int j;
+
+	i = 1;
+	j = 1;
+	while (i < 5)
+	{
+		j = 1;
+		while (j < 5)
+		{
+			ft_putchar(board[i][j++] + 48);
+			if (j < 5)
+				ft_putchar(' ');
+		}
+		i++;
+		ft_putchar('\n');
+	}
+}
+
+void ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
+void ft_putstr(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		write(1, &str[i], 1);
+		i++;
+	}
+	return ;
+}
+
+void error(void)
+{
+	ft_putstr("Error\n");
+}
+
+int *error_null(void)
+{
+	error();
+	return (NULL);
+}
+
+//passo 5: liberar espaço do quadro
+void free_board(int **board)
+{
+	int i;
+
+	i = 0;
+	while (i < 6)
+		free(board[i++]);
+	free(board);
+}
+
+
